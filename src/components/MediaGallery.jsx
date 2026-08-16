@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ZoomIn, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getAssetUrl } from '../utils/assetHelper';
 
 export default function MediaGallery({ isLightMode }) {
@@ -7,29 +7,29 @@ export default function MediaGallery({ isLightMode }) {
 
   const galleryItems = [
     {
-      url: getAssetUrl('Media/WVChapterLogo1_color.png'),
-      title: "WV SfN Annual Chapter Meeting & Poster Session",
-      caption: "Graduate and undergraduate researchers presenting their neuroscience discoveries."
+      url: getAssetUrl('Media/Group photo 2.jpg'),
+      title: "Brain Awareness Outreach Demonstrations",
+      caption: "Interactive neuroanatomy learning modules for West Virginia school students."
+    },
+    {
+      url: getAssetUrl('Media/Group_Photo-1.jpeg'),
+      title: "Brain Bee & Science Bowl Competition",
+      caption: "High school neuroscience competitors and volunteers showcasing their knowledge."
+    },
+    {
+      url: getAssetUrl('Media/GradStudentF1.png'),
+      title: "Youth STEM & Neuroscience Workshops",
+      caption: "Demonstrating how neural signals control movement and perception."
+    },
+    {
+      url: getAssetUrl('Media/GradStudentM1.png'),
+      title: "Sensory & Reflex Science Stations",
+      caption: "Hands-on reflex testing kits and sensory puzzle boards."
     },
     {
       url: getAssetUrl('Media/Site_illustr1.png'),
       title: "Keynote Lecture & Scientific Symposium",
       caption: "Chapter members engaged in scientific discussion during the annual meeting."
-    },
-    {
-      url: getAssetUrl('Media/GradStudentF1.png'),
-      title: "Brain Awareness Outreach Demonstrations",
-      caption: "Interactive neuroanatomy learning modules for West Virginia school students."
-    },
-    {
-      url: getAssetUrl('Media/GradStudentM1.png'),
-      title: "Sensory & Reflex Science Stations",
-      caption: "Demonstrating how neural signals control movement and perception."
-    },
-    {
-      url: getAssetUrl('Media/Site_illustr1.png'),
-      title: "Brain Bee & Science Bowl Competition",
-      caption: "High school neuroscience competitors showcasing their knowledge."
     },
     {
       url: getAssetUrl('Media/Site_illustr2.png'),

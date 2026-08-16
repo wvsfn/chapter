@@ -14,7 +14,7 @@ export default function ActivitiesShowcase({ isLightMode }) {
       location: "Morgantown & Statewide WV",
       description: "Interactive neuroanatomy demonstrations, sheep brain dissections, and memory games for K-12 students across West Virginia schools.",
       tag: "Community Outreach",
-      image: getAssetUrl('Media/GradStudentF1.png')
+      image: getAssetUrl('Media/Group photo 2.jpg')
     },
     {
       id: 2,
@@ -34,7 +34,7 @@ export default function ActivitiesShowcase({ isLightMode }) {
       location: "West Virginia University",
       description: "Statewide high school competition challenging top students on neurobiology, brain anatomy, and clinical neuroscience.",
       tag: "Competition",
-      image: getAssetUrl('Media/Site_illustr1.png')
+      image: getAssetUrl('Media/Group_Photo-1.jpeg')
     },
     {
       id: 4,

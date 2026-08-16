@@ -27,14 +27,14 @@ export default function Navbar({ isLightMode, toggleTheme, openContactModal }) {
             <span style={{ 
               fontFamily: 'var(--font-heading)', 
               fontWeight: 800, 
-              fontSize: '1.2rem', 
+              fontSize: '1.25rem', 
               lineHeight: 1.1,
-              color: isLightMode ? 'var(--wvu-navy)' : '#F8FAFC'
+              color: isLightMode ? 'var(--wvu-navy)' : '#FFFFFF'
             }}>
-              WV Society for Neuroscience
+              WV Chapter
             </span>
-            <span style={{ fontSize: '0.75rem', color: 'var(--wvu-gold)', fontWeight: 600, letterSpacing: '0.05em' }}>
-              STATE CHAPTER OF SfN
+            <span style={{ fontSize: '0.78rem', color: 'var(--wvu-gold)', fontWeight: 600, letterSpacing: '0.05em' }}>
+              Society for Neuroscience
             </span>
           </div>
         </a>

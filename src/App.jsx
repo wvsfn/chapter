@@ -73,10 +73,10 @@ export default function App() {
                   Statewide Excellence
                 </span>
                 <h2 style={{ fontSize: '2rem', fontWeight: 800, marginTop: '0.3rem', marginBottom: '1rem', color: isLightMode ? 'var(--wvu-navy)' : '#F8FAFC' }}>
-                  Connecting Brain Researchers Across West Virginia
+                  Connecting Neuroscientists with the Public across West Virginia
                 </h2>
-                <p style={{ color: isLightMode ? 'var(--text-light-secondary)' : 'var(--text-dark-secondary)', fontSize: '1rem', lineHeight: 1.7, marginBottom: '1rem' }}>
-                  The West Virginia Chapter of the Society for Neuroscience brings together faculty, trainees, clinical researchers, and educators from institutions across the state to foster scientific discovery and public brain awareness.
+                <p style={{ color: isLightMode ? 'var(--text-light-secondary)' : 'var(--text-dark-secondary)', fontSize: '1.02rem', lineHeight: 1.7, marginBottom: '1rem' }}>
+                  The WV Chapter of the SfN brings together scientists, educators, and clinicians from across the state to share excitement about neuroscience with our communities. Through collaboration, public engagement, and educational outreach, we share the knowledge, foster curiosity and learning in children, and inspire the next generation to explore the world and discover their passion in life.
                 </p>
               </div>
 
