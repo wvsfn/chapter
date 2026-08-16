@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Heart, FileText, CheckCircle2, ShieldCheck, Download, Sparkles, MessageSquare, User } from 'lucide-react';
+import { Heart, FileText, CheckCircle2, ShieldCheck, Download, Sparkles, ExternalLink } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import jsPDF from 'jspdf';
 
-export default function DonationSection({ isLightMode, onAddDonor }) {
+export default function DonationSection({ isLightMode, onAddDonor, paypalEmail = "wvsfnchapter@gmail.com" }) {
   const [selectedAmount, setSelectedAmount] = useState(50);
   const [customAmount, setCustomAmount] = useState('');
   const [donorName, setDonorName] = useState('');
@@ -30,7 +30,7 @@ export default function DonationSection({ isLightMode, onAddDonor }) {
     const newReceipt = {
       receiptId: 'WVSFN-' + Math.floor(100000 + Math.random() * 900000),
       date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-      donorName: donorName.trim() || 'Valued Donor',
+      donorName: donorName.trim() || 'Valued Supporter',
       donorEmail: donorEmail.trim() || 'N/A',
       amount: finalAmount,
       message: donorMessage,
@@ -48,6 +48,10 @@ export default function DonationSection({ isLightMode, onAddDonor }) {
         date: 'Just now'
       });
     }
+
+    // Forward to PayPal checkout window for real non-profit deposit
+    const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=${encodeURIComponent(paypalEmail)}&item_name=${encodeURIComponent('WV Society for Neuroscience 501(c)(3) Donation')}&currency_code=USD&amount=${finalAmount}`;
+    window.open(paypalUrl, '_blank', 'noopener,noreferrer');
   };
 
   const downloadTaxReceiptPDF = () => {
@@ -59,71 +63,72 @@ export default function DonationSection({ isLightMode, onAddDonor }) {
     doc.rect(0, 0, 210, 35, 'F');
     
     doc.setTextColor(234, 170, 0); // WVU Gold
-    doc.setFontSize(18);
+    doc.setFontSize(20);
     doc.setFont('helvetica', 'bold');
-    doc.text('WEST VIRGINIA SOCIETY FOR NEUROSCIENCE', 15, 18);
+    doc.text('WV Society for Neuroscience', 15, 18);
     
-    doc.setFontSize(10);
     doc.setTextColor(255, 255, 255);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
     doc.text('Official 501(c)(3) Non-Profit Contribution Receipt', 15, 27);
 
-    // Details Box
+    // Body Info
     doc.setTextColor(15, 23, 42);
-    doc.setFontSize(11);
+    doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
-    doc.text(`Receipt Number: ${receiptData.receiptId}`, 15, 50);
-    doc.text(`Date of Contribution: ${receiptData.date}`, 15, 58);
-    
+    doc.text('DONATION & TAX DEDUCTION DETAILS', 15, 50);
+
     doc.setFont('helvetica', 'normal');
-    doc.text(`Donor Name: ${receiptData.donorName}`, 15, 68);
-    doc.text(`Donor Email: ${receiptData.donorEmail}`, 15, 76);
-    doc.text(`Contribution Amount: $${receiptData.amount.toFixed(2)} USD`, 15, 84);
-
-    // Tax Exemption Statement
-    doc.setFillColor(248, 250, 252);
-    doc.rect(15, 95, 180, 45, 'F');
-    doc.setDrawColor(0, 40, 85);
-    doc.rect(15, 95, 180, 45, 'S');
-
     doc.setFontSize(10);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Tax Deductibility Disclosure Statement:', 20, 105);
+    doc.text(`Receipt ID: ${receiptData.receiptId}`, 15, 62);
+    doc.text(`Date of Contribution: ${receiptData.date}`, 15, 70);
+    doc.text(`Donor Name: ${receiptData.donorName}`, 15, 78);
+    doc.text(`Donor Email: ${receiptData.donorEmail}`, 15, 86);
+    doc.text(`Contribution Amount: $${receiptData.amount.toFixed(2)} USD`, 15, 94);
 
-    doc.setFont('helvetica', 'normal');
+    // Box outline for tax exemption declaration
+    doc.setDrawColor(234, 170, 0);
+    doc.setFillColor(248, 250, 252);
+    doc.roundedRect(15, 106, 180, 45, 3, 3, 'FD');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(0, 40, 85);
+    doc.text('501(c)(3) Tax-Exempt Status & Legal Disclosure:', 20, 116);
+
+    doc.setFont('helvetica', 'italic');
     doc.setFontSize(9);
-    const splitText = doc.splitTextToSize(
-      'The West Virginia Chapter of the Society for Neuroscience is a tax-exempt non-profit organization under Section 501(c)(3) of the Internal Revenue Code. No goods or services were provided in exchange for this contribution. Please retain this receipt for your official income tax records.',
+    doc.setTextColor(51, 65, 85);
+    const splitDisclaimer = doc.splitTextToSize(
+      'The West Virginia Chapter of the Society for Neuroscience is a registered 501(c)(3) non-profit organization. No goods or services were provided in exchange for this contribution. This receipt confirms your contribution is 100% tax-deductible to the extent permitted by law.',
       170
     );
-    doc.text(splitText, 20, 114);
+    doc.text(splitDisclaimer, 20, 126);
 
-    // Footer
-    doc.setFontSize(9);
-    doc.setTextColor(100, 116, 139);
-    doc.text('West Virginia SfN Chapter | Dedicated Non-Profit Organization', 15, 160);
-    doc.text('PayPal Non-Profit Direct Bank Deposit Account Enabled', 15, 166);
+    // Signature Line
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(15, 23, 42);
+    doc.text('Authorized Chapter Officer Signature:', 15, 170);
+    doc.line(15, 185, 95, 185);
+    doc.setFontSize(8);
+    doc.text('Executive Committee, West Virginia Chapter SfN', 15, 190);
 
-    doc.save(`WV_SfN_Tax_Receipt_${receiptData.receiptId}.pdf`);
+    // Save PDF file
+    doc.save(`WVSfN_Tax_Receipt_${receiptData.receiptId}.pdf`);
   };
 
   return (
-    <section id="donate" style={{ padding: '5rem 0', position: 'relative' }}>
+    <section id="donate" style={{ padding: '5rem 0', position: 'relative', zIndex: 2 }}>
       <div className="container">
         
-        <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 3rem auto' }}>
-          <span style={{ 
-            color: 'var(--wvu-gold)', 
-            fontWeight: 700, 
-            fontSize: '0.9rem', 
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase'
-          }}>
+        <div style={{ textAlign: 'center', maxWidth: '750px', margin: '0 auto 3.5rem auto' }}>
+          <span style={{ color: 'var(--wvu-gold)', fontWeight: 700, fontSize: '0.9rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Tax-Deductible Non-Profit Giving
           </span>
-          <h2 style={{ fontSize: '2.4rem', fontWeight: 800, marginTop: '0.4rem', marginBottom: '1rem' }}>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginTop: '0.4rem', marginBottom: '1rem', color: isLightMode ? 'var(--wvu-navy)' : '#F8FAFC' }}>
             Support Brain Research & STEM Outreach in WV
           </h2>
-          <p style={{ color: isLightMode ? 'var(--text-light-secondary)' : 'var(--text-dark-secondary)', fontSize: '1.05rem' }}>
+          <p style={{ color: isLightMode ? 'var(--text-light-secondary)' : 'var(--text-dark-secondary)', fontSize: '1.08rem' }}>
             Your 100% tax-deductible donation directly funds student travel awards, K-12 Brain Awareness Week kits, and community science outreach across West Virginia.
           </p>
         </div>
@@ -131,34 +136,32 @@ export default function DonationSection({ isLightMode, onAddDonor }) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem', alignItems: 'start' }}>
           
           {/* Donation Form Card */}
-          <div className="glass-card" style={{ padding: '2rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', color: 'var(--wvu-gold)' }}>
-              <Heart size={22} fill="currentColor" />
-              <h3 style={{ fontSize: '1.35rem', fontWeight: 700, color: isLightMode ? 'var(--wvu-navy)' : '#F8FAFC' }}>
-                Make a Tax-Deductible Donation
-              </h3>
-            </div>
+          <div className="glass-card" style={{ padding: '2.25rem' }}>
+            <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: isLightMode ? 'var(--wvu-navy)' : '#F8FAFC' }}>
+              <Heart color="var(--wvu-gold)" fill="var(--wvu-gold)" size={22} /> Make a Tax-Deductible Donation
+            </h3>
 
             <form onSubmit={handleDonate}>
-              {/* Preset Buttons */}
-              <label style={{ display: 'block', fontWeight: 600, fontSize: '0.9rem', marginBottom: '0.6rem' }}>
+              
+              {/* Preset Amounts */}
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'var(--wvu-gold)', marginBottom: '0.6rem', textTransform: 'uppercase' }}>
                 Select Contribution Amount:
               </label>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.6rem', marginBottom: '1.25rem' }}>
-                {presets.map(amt => (
+                {presets.map((amt) => (
                   <button
-                    key={amt}
                     type="button"
+                    key={amt}
                     onClick={() => { setSelectedAmount(amt); setCustomAmount(''); }}
                     style={{
                       padding: '0.75rem 0',
                       borderRadius: '0.6rem',
-                      fontWeight: 700,
-                      fontSize: '1rem',
+                      fontWeight: 800,
+                      fontSize: '1.05rem',
+                      border: (selectedAmount === amt && !customAmount) ? '2px solid var(--wvu-gold)' : '1px solid var(--bg-dark-border)',
+                      background: (selectedAmount === amt && !customAmount) ? 'var(--wvu-gold)' : (isLightMode ? '#FFFFFF' : 'rgba(255,255,255,0.05)'),
+                      color: (selectedAmount === amt && !customAmount) ? '#001938' : (isLightMode ? 'var(--wvu-navy)' : '#F8FAFC'),
                       cursor: 'pointer',
-                      border: selectedAmount === amt && !customAmount ? '2px solid var(--wvu-gold)' : '1px solid var(--bg-dark-border)',
-                      background: selectedAmount === amt && !customAmount ? 'var(--wvu-gold)' : (isLightMode ? '#FFFFFF' : 'rgba(255,255,255,0.05)'),
-                      color: selectedAmount === amt && !customAmount ? '#001938' : (isLightMode ? 'var(--wvu-navy)' : '#F8FAFC'),
                       transition: 'all 0.2s ease'
                     }}
                   >
@@ -167,63 +170,71 @@ export default function DonationSection({ isLightMode, onAddDonor }) {
                 ))}
               </div>
 
-              {/* Custom Amount */}
-              <div style={{ marginBottom: '1.5rem' }}>
+              {/* Custom Amount Input */}
+              <div style={{ marginBottom: '1.25rem' }}>
                 <input 
-                  type="number" 
+                  type="number"
                   placeholder="Or Enter Custom Amount ($ USD)"
                   value={customAmount}
                   onChange={(e) => setCustomAmount(e.target.value)}
+                  min="1"
                   style={{
                     width: '100%',
-                    padding: '0.8rem 1rem',
+                    padding: '0.75rem 1rem',
                     borderRadius: '0.6rem',
                     border: '1px solid var(--bg-dark-border)',
                     background: isLightMode ? '#FFFFFF' : 'rgba(0,0,0,0.2)',
                     color: isLightMode ? 'var(--text-light-primary)' : '#FFFFFF',
-                    fontSize: '1rem'
+                    fontSize: '0.95rem'
                   }}
                 />
               </div>
 
               {/* Donor Name & Email */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
-                <input 
-                  type="text" 
-                  placeholder="Your Full Name" 
-                  value={donorName}
-                  onChange={(e) => setDonorName(e.target.value)}
-                  style={{
-                    padding: '0.75rem 1rem',
-                    borderRadius: '0.6rem',
-                    border: '1px solid var(--bg-dark-border)',
-                    background: isLightMode ? '#FFFFFF' : 'rgba(0,0,0,0.2)',
-                    color: isLightMode ? 'var(--text-light-primary)' : '#FFFFFF'
-                  }}
-                />
-                <input 
-                  type="email" 
-                  placeholder="Email (For Tax Receipt)" 
-                  value={donorEmail}
-                  onChange={(e) => setDonorEmail(e.target.value)}
-                  style={{
-                    padding: '0.75rem 1rem',
-                    borderRadius: '0.6rem',
-                    border: '1px solid var(--bg-dark-border)',
-                    background: isLightMode ? '#FFFFFF' : 'rgba(0,0,0,0.2)',
-                    color: isLightMode ? 'var(--text-light-primary)' : '#FFFFFF'
-                  }}
-                />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
+                <div>
+                  <input 
+                    type="text" 
+                    placeholder="Your Full Name"
+                    value={donorName}
+                    onChange={(e) => setDonorName(e.target.value)}
+                    required
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem 1rem',
+                      borderRadius: '0.6rem',
+                      border: '1px solid var(--bg-dark-border)',
+                      background: isLightMode ? '#FFFFFF' : 'rgba(0,0,0,0.2)',
+                      color: isLightMode ? 'var(--text-light-primary)' : '#FFFFFF',
+                      fontSize: '0.9rem'
+                    }}
+                  />
+                </div>
+                <div>
+                  <input 
+                    type="email" 
+                    placeholder="Email (For Tax Receipt)"
+                    value={donorEmail}
+                    onChange={(e) => setDonorEmail(e.target.value)}
+                    required
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem 1rem',
+                      borderRadius: '0.6rem',
+                      border: '1px solid var(--bg-dark-border)',
+                      background: isLightMode ? '#FFFFFF' : 'rgba(0,0,0,0.2)',
+                      color: isLightMode ? 'var(--text-light-primary)' : '#FFFFFF',
+                      fontSize: '0.9rem'
+                    }}
+                  />
+                </div>
               </div>
 
               {/* Personal Message */}
               <div style={{ marginBottom: '1.25rem' }}>
-                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.4rem', color: isLightMode ? 'var(--text-light-secondary)' : 'var(--text-dark-secondary)' }}>
-                  Personal Message / Dedication (Optional):
-                </label>
                 <textarea 
                   rows="2"
-                  placeholder="Write a message to be featured on our Supporter Honor Roll..."
+                  placeholder="Personal Message / Dedication (Optional)..."
                   value={donorMessage}
                   onChange={(e) => setDonorMessage(e.target.value)}
                   style={{
@@ -233,12 +244,13 @@ export default function DonationSection({ isLightMode, onAddDonor }) {
                     border: '1px solid var(--bg-dark-border)',
                     background: isLightMode ? '#FFFFFF' : 'rgba(0,0,0,0.2)',
                     color: isLightMode ? 'var(--text-light-primary)' : '#FFFFFF',
-                    resize: 'none'
+                    resize: 'none',
+                    fontSize: '0.9rem'
                   }}
                 />
               </div>
 
-              {/* Public Recognition Checkbox */}
+              {/* Public Honor Roll Checkbox */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.5rem' }}>
                 <input 
                   type="checkbox" 
@@ -252,14 +264,14 @@ export default function DonationSection({ isLightMode, onAddDonor }) {
                 </label>
               </div>
 
-              {/* Donate & Generate Receipt Button */}
+              {/* Donate Button */}
               <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '0.9rem', fontSize: '1.05rem' }}>
-                <Heart size={18} fill="currentColor" /> Donate ${customAmount || selectedAmount} via PayPal Non-Profit
+                <Heart size={18} fill="currentColor" /> Donate ${customAmount || selectedAmount} via PayPal Non-Profit <ExternalLink size={16} />
               </button>
 
               {/* Security Note */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', marginTop: '1rem', fontSize: '0.8rem', color: 'var(--wvu-gold)' }}>
-                <ShieldCheck size={16} /> Direct Non-Profit Bank Deposit • Encrypted 256-bit PayPal Checkout
+                <ShieldCheck size={16} /> Direct Non-Profit Deposit • Encrypted PayPal Checkout
               </div>
             </form>
           </div>
@@ -305,7 +317,7 @@ export default function DonationSection({ isLightMode, onAddDonor }) {
           left: 0,
           width: '100vw',
           height: '100vh',
-          background: 'rgba(0,0,0,0.8)',
+          background: 'rgba(0,0,0,0.85)',
           backdropFilter: 'blur(8px)',
           zIndex: 100,
           display: 'flex',
@@ -319,10 +331,10 @@ export default function DonationSection({ isLightMode, onAddDonor }) {
                 <CheckCircle2 size={32} />
               </div>
               <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: isLightMode ? 'var(--wvu-navy)' : '#F8FAFC' }}>
-                Thank You for Your Contribution!
+                Forwarding to PayPal Checkout!
               </h3>
               <p style={{ fontSize: '0.9rem', color: 'var(--wvu-gold)', fontWeight: 600, marginTop: '0.2rem' }}>
-                Official 501(c)(3) Tax Receipt Ready
+                Official 501(c)(3) Tax Receipt Generated
               </p>
             </div>
 
@@ -346,7 +358,7 @@ export default function DonationSection({ isLightMode, onAddDonor }) {
             </div>
 
             <p style={{ fontSize: '0.8rem', color: isLightMode ? 'var(--text-light-secondary)' : 'var(--text-dark-secondary)', fontStyle: 'italic', marginBottom: '1.5rem', textAlign: 'center' }}>
-              "WV Society for Neuroscience is a registered 501(c)(3) non-profit organization. No goods or services were provided in exchange for this contribution."
+              "WV Society for Neuroscience is a registered 501(c)(3) non-profit organization. Your PayPal window has opened to complete the donation deposit."
             </p>
 
             <div style={{ display: 'flex', gap: '0.75rem' }}>
