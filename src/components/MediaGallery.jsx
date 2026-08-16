@@ -1,51 +1,52 @@
 import React, { useState } from 'react';
 import { Image, X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react';
+import { getAssetUrl } from '../utils/assetHelper';
 
 export default function MediaGallery({ isLightMode }) {
   const [activeImageIndex, setActiveImageIndex] = useState(null);
 
   const galleryItems = [
     {
-      url: "./Annual meeting/photo 1.JPG",
-      title: "WV SfN Annual Chapter Meeting Poster Session",
+      url: getAssetUrl('Media/WVChapterLogo1_color.png'),
+      title: "WV SfN Annual Chapter Meeting & Poster Session",
       caption: "Graduate and undergraduate researchers presenting their neuroscience discoveries."
     },
     {
-      url: "./Annual meeting/photo 2.JPG",
+      url: getAssetUrl('Media/Site_illustr1.png'),
       title: "Keynote Lecture & Scientific Symposium",
       caption: "Chapter members engaged in scientific discussion during the annual meeting."
     },
     {
-      url: "./Media/GradStudentF1.png",
+      url: getAssetUrl('Media/GradStudentF1.png'),
       title: "Brain Awareness Outreach Demonstrations",
       caption: "Interactive neuroanatomy learning modules for West Virginia school students."
     },
     {
-      url: "./Media/GradStudentM1.png",
+      url: getAssetUrl('Media/GradStudentM1.png'),
       title: "Sensory & Reflex Science Stations",
       caption: "Demonstrating how neural signals control movement and perception."
     },
     {
-      url: "./Media/Site_illustr1.png",
+      url: getAssetUrl('Media/Site_illustr1.png'),
       title: "Brain Bee & Science Bowl Competition",
       caption: "High school neuroscience competitors showcasing their knowledge."
     },
     {
-      url: "./Media/Site_illustr2.png",
+      url: getAssetUrl('Media/Site_illustr2.png'),
       title: "K-12 STEM Field Trips to Research Labs",
       caption: "Students visiting advanced neuroimaging and electrophysiology labs."
     }
   ];
 
   return (
-    <section id="gallery" style={{ padding: '5rem 0', background: isLightMode ? 'rgba(0, 40, 85, 0.02)' : 'rgba(255, 255, 255, 0.01)' }}>
+    <section id="gallery" style={{ padding: '5rem 0', position: 'relative', zIndex: 2 }}>
       <div className="container">
         
         <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 3rem auto' }}>
           <span style={{ color: 'var(--wvu-gold)', fontWeight: 700, fontSize: '0.9rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Chapter Archive
           </span>
-          <h2 style={{ fontSize: '2.4rem', fontWeight: 800, marginTop: '0.4rem', marginBottom: '1rem' }}>
+          <h2 style={{ fontSize: '2.4rem', fontWeight: 800, marginTop: '0.4rem', marginBottom: '1rem', color: isLightMode ? 'var(--wvu-navy)' : '#F8FAFC' }}>
             Media & Event Photo Gallery
           </h2>
           <p style={{ color: isLightMode ? 'var(--text-light-secondary)' : 'var(--text-dark-secondary)', fontSize: '1.05rem' }}>
@@ -64,7 +65,8 @@ export default function MediaGallery({ isLightMode }) {
                 cursor: 'pointer',
                 overflow: 'hidden',
                 position: 'relative',
-                height: '240px'
+                height: '240px',
+                background: 'rgba(0, 40, 85, 0.2)'
               }}
             >
               <img 
@@ -73,7 +75,7 @@ export default function MediaGallery({ isLightMode }) {
                 style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
                 onMouseOver={(e) => e.target.style.transform = 'scale(1.08)'}
                 onMouseOut={(e) => e.target.style.transform = 'scale(1.0)'}
-                onError={(e) => { e.target.onerror = null; e.target.src = './Media/WVChapterLogo1_color.png'; }}
+                onError={(e) => { e.target.onerror = null; e.target.src = getAssetUrl('Media/WVChapterLogo1_color.png'); }}
               />
               <div style={{
                 position: 'absolute',

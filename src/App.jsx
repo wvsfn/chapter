@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from './components/Navbar.jsx';
+import NeuralBackground from './components/NeuralBackground.jsx';
 import NeuralHero from './components/NeuralHero.jsx';
 import DonationSection from './components/DonationSection.jsx';
 import DonorWall from './components/DonorWall.jsx';
@@ -50,18 +51,21 @@ export default function App() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+      {/* Full Page Moving Neural Network Background */}
+      <NeuralBackground isLightMode={isLightMode} />
+
       <Navbar 
         isLightMode={isLightMode} 
         toggleTheme={toggleTheme} 
         openContactModal={() => setIsContactModalOpen(true)} 
       />
 
-      <main style={{ flex: 1 }}>
+      <main style={{ flex: 1, position: 'relative', zIndex: 2 }}>
         <NeuralHero isLightMode={isLightMode} />
         
         {/* About Section */}
-        <section id="about" style={{ padding: '4rem 0 2rem 0', background: isLightMode ? 'rgba(0, 40, 85, 0.02)' : 'rgba(255, 255, 255, 0.01)' }}>
+        <section id="about" style={{ padding: '4rem 0 2rem 0', position: 'relative', zIndex: 2 }}>
           <div className="container">
             <div className="glass-card" style={{ padding: '2.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', alignItems: 'center' }}>
               <div>
@@ -77,13 +81,13 @@ export default function App() {
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <div style={{ background: isLightMode ? '#FFFFFF' : 'rgba(0,0,0,0.2)', padding: '1.25rem', borderRadius: '0.75rem', border: '1px solid var(--wvu-gold)', textAlign: 'center' }}>
+                <div style={{ background: isLightMode ? '#FFFFFF' : 'rgba(0,0,0,0.3)', padding: '1.25rem', borderRadius: '0.75rem', border: '1px solid var(--wvu-gold)', textAlign: 'center' }}>
                   <span style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--wvu-gold)', display: 'block' }}>100+</span>
-                  <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Active Members</span>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: isLightMode ? 'var(--wvu-navy)' : '#F8FAFC' }}>Active Members</span>
                 </div>
-                <div style={{ background: isLightMode ? '#FFFFFF' : 'rgba(0,0,0,0.2)', padding: '1.25rem', borderRadius: '0.75rem', border: '1px solid var(--wvu-gold)', textAlign: 'center' }}>
+                <div style={{ background: isLightMode ? '#FFFFFF' : 'rgba(0,0,0,0.3)', padding: '1.25rem', borderRadius: '0.75rem', border: '1px solid var(--wvu-gold)', textAlign: 'center' }}>
                   <span style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--wvu-gold)', display: 'block' }}>10+</span>
-                  <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Years Outreach</span>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: isLightMode ? 'var(--wvu-navy)' : '#F8FAFC' }}>Years Outreach</span>
                 </div>
               </div>
             </div>

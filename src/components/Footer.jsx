@@ -1,5 +1,6 @@
 import React from 'react';
-import { ExternalLink, Heart, Mail, Github, Shield, Mountain } from 'lucide-react';
+import { ExternalLink, Mail, Github, Shield, Mountain } from 'lucide-react';
+import { getAssetUrl } from '../utils/assetHelper';
 
 export default function Footer({ isLightMode, openContactModal }) {
   return (
@@ -8,7 +9,8 @@ export default function Footer({ isLightMode, openContactModal }) {
       color: '#F8FAFC',
       padding: '4rem 0 2rem 0',
       borderTop: '2px solid var(--wvu-gold)',
-      position: 'relative'
+      position: 'relative',
+      zIndex: 2
     }}>
       <div className="container">
         
@@ -18,10 +20,10 @@ export default function Footer({ isLightMode, openContactModal }) {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
               <img 
-                src="./Media/WVChapterLogo1_color.png" 
+                src={getAssetUrl('Media/WVChapterLogo1_color.png')} 
                 alt="WV SfN Chapter Logo" 
                 style={{ height: '40px', objectFit: 'contain' }}
-                onError={(e) => { e.target.onerror = null; e.target.src = './Media/WVChapterLogo4_color.png'; }}
+                onError={(e) => { e.target.onerror = null; e.target.src = getAssetUrl('Media/WVChapterLogo4_color.png'); }}
               />
               <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.15rem', color: '#FFFFFF' }}>
                 WV Society for Neuroscience

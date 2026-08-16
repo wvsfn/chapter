@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Sun, Moon, Heart, ExternalLink, Menu, X } from 'lucide-react';
+import { getAssetUrl } from '../utils/assetHelper';
 
 export default function Navbar({ isLightMode, toggleTheme, openContactModal }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -8,17 +9,19 @@ export default function Navbar({ isLightMode, toggleTheme, openContactModal }) {
     <header className="sticky top-0 z-50 transition-all duration-300" style={{
       background: isLightMode ? 'rgba(248, 250, 252, 0.92)' : 'rgba(7, 13, 24, 0.92)',
       backdropFilter: 'blur(12px)',
-      borderBottom: isLightMode ? '1px solid rgba(0, 40, 85, 0.1)' : '1px solid rgba(255, 255, 255, 0.08)'
+      borderBottom: isLightMode ? '1px solid rgba(0, 40, 85, 0.1)' : '1px solid rgba(255, 255, 255, 0.08)',
+      position: 'relative',
+      zIndex: 50
     }}>
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.85rem 1.5rem' }}>
         
         {/* Brand Logos */}
         <a href="#home" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
           <img 
-            src="./Media/WVChapterLogo1_color.png" 
+            src={getAssetUrl('Media/WVChapterLogo1_color.png')} 
             alt="WV SfN Chapter Logo" 
             style={{ height: '44px', objectFit: 'contain' }}
-            onError={(e) => { e.target.onerror = null; e.target.src = './Media/WVChapterLogo4_color.png'; }}
+            onError={(e) => { e.target.onerror = null; e.target.src = getAssetUrl('Media/WVChapterLogo4_color.png'); }}
           />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <span style={{ 
@@ -37,7 +40,7 @@ export default function Navbar({ isLightMode, toggleTheme, openContactModal }) {
         </a>
 
         {/* Desktop Navigation Links */}
-        <nav style={{ display: 'none', alignItems: 'center', gap: '1.75rem', mdDisplay: 'flex' }} className="desktop-nav">
+        <nav style={{ display: 'none', alignItems: 'center', gap: '1.75rem' }} className="desktop-nav">
           <a href="#about" className="nav-link">About</a>
           <a href="#activities" className="nav-link">Activities</a>
           <a href="#gallery" className="nav-link">Gallery</a>

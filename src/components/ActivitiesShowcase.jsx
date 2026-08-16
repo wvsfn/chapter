@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Calendar, MapPin, Users, ExternalLink, Sparkles, Filter, Award } from 'lucide-react';
+import { Calendar, MapPin, ExternalLink } from 'lucide-react';
+import { getAssetUrl } from '../utils/assetHelper';
 
 export default function ActivitiesShowcase({ isLightMode }) {
   const [activeFilter, setActiveFilter] = useState('All');
@@ -13,8 +14,7 @@ export default function ActivitiesShowcase({ isLightMode }) {
       location: "Morgantown & Statewide WV",
       description: "Interactive neuroanatomy demonstrations, sheep brain dissections, and memory games for K-12 students across West Virginia schools.",
       tag: "Community Outreach",
-      image: "./Media/GradStudentF1.png",
-      wvuPartnerLink: true
+      image: getAssetUrl('Media/GradStudentF1.png')
     },
     {
       id: 2,
@@ -24,7 +24,7 @@ export default function ActivitiesShowcase({ isLightMode }) {
       location: "WVU Extension & Local County Clubs",
       description: "Hands-on neuro-sensory discovery labs introducing young children to how senses work, reflex pathways, and brain health.",
       tag: "Youth Engagement",
-      image: "./Media/GradStudentM1.png"
+      image: getAssetUrl('Media/GradStudentM1.png')
     },
     {
       id: 3,
@@ -34,7 +34,7 @@ export default function ActivitiesShowcase({ isLightMode }) {
       location: "West Virginia University",
       description: "Statewide high school competition challenging top students on neurobiology, brain anatomy, and clinical neuroscience.",
       tag: "Competition",
-      image: "./Media/Site_illustr1.png"
+      image: getAssetUrl('Media/Site_illustr1.png')
     },
     {
       id: 4,
@@ -44,7 +44,7 @@ export default function ActivitiesShowcase({ isLightMode }) {
       location: "WVU Neuroscience Laboratories",
       description: "Middle and high school student visits to advanced research labs, featuring live microscopy, electrophysiology demos, and career Q&As.",
       tag: "Lab Tour",
-      image: "./Media/Site_illustr2.png"
+      image: getAssetUrl('Media/Site_illustr2.png')
     },
     {
       id: 5,
@@ -54,7 +54,7 @@ export default function ActivitiesShowcase({ isLightMode }) {
       location: "West Virginia University Health Sciences Center",
       description: "Keynote addresses from leading neuroscientists, trainee poster presentations, travel grant awards, and executive election meetings.",
       tag: "Scientific Conference",
-      image: "./Annual meeting/photo 1.JPG"
+      image: getAssetUrl('Media/WVChapterLogo1_color.png')
     }
   ];
 
@@ -65,14 +65,14 @@ export default function ActivitiesShowcase({ isLightMode }) {
     : activities.filter(a => a.category === activeFilter);
 
   return (
-    <section id="activities" style={{ padding: '5rem 0' }}>
+    <section id="activities" style={{ padding: '5rem 0', position: 'relative', zIndex: 2 }}>
       <div className="container">
         
         <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 3rem auto' }}>
           <span style={{ color: 'var(--wvu-gold)', fontWeight: 700, fontSize: '0.9rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Promoting Science & Community
           </span>
-          <h2 style={{ fontSize: '2.4rem', fontWeight: 800, marginTop: '0.4rem', marginBottom: '1rem' }}>
+          <h2 style={{ fontSize: '2.4rem', fontWeight: 800, marginTop: '0.4rem', marginBottom: '1rem', color: isLightMode ? 'var(--wvu-navy)' : '#F8FAFC' }}>
             Chapter Activities & Outreach Initiatives
           </h2>
           <p style={{ color: isLightMode ? 'var(--text-light-secondary)' : 'var(--text-dark-secondary)', fontSize: '1.05rem' }}>
@@ -107,12 +107,12 @@ export default function ActivitiesShowcase({ isLightMode }) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
           {filteredActivities.map(act => (
             <div key={act.id} className="glass-card" style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-              <div style={{ height: '200px', width: '100%', overflow: 'hidden', position: 'relative' }}>
+              <div style={{ height: '200px', width: '100%', overflow: 'hidden', position: 'relative', background: 'rgba(0, 40, 85, 0.2)' }}>
                 <img 
                   src={act.image} 
                   alt={act.title} 
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  onError={(e) => { e.target.onerror = null; e.target.src = './Media/WVChapterLogo1_color.png'; }}
+                  onError={(e) => { e.target.onerror = null; e.target.src = getAssetUrl('Media/WVChapterLogo1_color.png'); }}
                 />
                 <span style={{
                   position: 'absolute',
