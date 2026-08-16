@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Heart, FileText, CheckCircle2, ShieldCheck, Download, Sparkles, ExternalLink } from 'lucide-react';
+import { Heart, CheckCircle2, ShieldCheck, Download, Sparkles, ExternalLink } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import jsPDF from 'jspdf';
 
-export default function DonationSection({ isLightMode, onAddDonor, paypalEmail = "wvsfnchapter@gmail.com" }) {
+export default function DonationSection({ isLightMode, onAddDonor, paypalEmail = "nwv.sfn@gmail.com" }) {
   const [selectedAmount, setSelectedAmount] = useState(50);
   const [customAmount, setCustomAmount] = useState('');
   const [donorName, setDonorName] = useState('');
@@ -49,7 +49,7 @@ export default function DonationSection({ isLightMode, onAddDonor, paypalEmail =
       });
     }
 
-    // Forward to PayPal checkout window for real non-profit deposit
+    // Forward to official PayPal account checkout
     const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=${encodeURIComponent(paypalEmail)}&item_name=${encodeURIComponent('WV Society for Neuroscience 501(c)(3) Donation')}&currency_code=USD&amount=${finalAmount}`;
     window.open(paypalUrl, '_blank', 'noopener,noreferrer');
   };
@@ -271,7 +271,7 @@ export default function DonationSection({ isLightMode, onAddDonor, paypalEmail =
 
               {/* Security Note */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', marginTop: '1rem', fontSize: '0.8rem', color: 'var(--wvu-gold)' }}>
-                <ShieldCheck size={16} /> Direct Non-Profit Deposit • Encrypted PayPal Checkout
+                <ShieldCheck size={16} /> Direct Non-Profit Deposit to {paypalEmail} • Encrypted PayPal Checkout
               </div>
             </form>
           </div>
@@ -358,7 +358,7 @@ export default function DonationSection({ isLightMode, onAddDonor, paypalEmail =
             </div>
 
             <p style={{ fontSize: '0.8rem', color: isLightMode ? 'var(--text-light-secondary)' : 'var(--text-dark-secondary)', fontStyle: 'italic', marginBottom: '1.5rem', textAlign: 'center' }}>
-              "WV Society for Neuroscience is a registered 501(c)(3) non-profit organization. Your PayPal window has opened to complete the donation deposit."
+              "WV Society for Neuroscience is a registered 501(c)(3) non-profit organization. Your PayPal checkout tab has opened to deposit funds directly to {paypalEmail}."
             </p>
 
             <div style={{ display: 'flex', gap: '0.75rem' }}>
